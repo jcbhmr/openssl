@@ -67,20 +67,14 @@ jobs:
           name: openssl-${{ matrix.target }}
           path: stage/usr/local
   nmake-x86_64-pc-windows-msvc:
-    defaults:
-      run:
-        shell: bash
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - uses: shogo82148/actions-setup-perl@v1
-      # https://github.com/sfackler/rust-openssl/issues/2149
-      - shell: pwsh
-        run: perl ./Configure
+      - run: perl ./Configure
       - run: nmake
-      - run: nmake DESTDIR="$PWD/stage" install
+      - run: nmake DESTDIR="$pwd/stage" install
       - uses: actions/upload-artifact@v4
         with:
           name: openssl-x86_64-pc-windows-msvc
