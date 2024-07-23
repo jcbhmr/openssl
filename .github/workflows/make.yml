@@ -1,0 +1,83 @@
+name: make
+on:
+  push:
+    branches: ["master"]
+    paths-ignore:
+      - .*
+      - .*/**
+      - demos/**
+      - doc/**
+      - ACKNOWLEDGEMENTS.md
+      - AUTHORS.md
+      - CHANGES.md
+      - CODE-OF-CONDUCT.md
+      - CONTRIBUTING.md
+      - HACKING.md
+      - INSTALL.md
+      - LICENSE.txt
+      - NEWS.md
+      - NOTES*
+      - README.md
+      - SUPPORT.md
+      - "!.github/workflows/make.yml"
+  pull_request:
+    paths-ignore:
+      - .*
+      - .*/**
+      - demos/**
+      - doc/**
+      - ACKNOWLEDGEMENTS.md
+      - AUTHORS.md
+      - CHANGES.md
+      - CODE-OF-CONDUCT.md
+      - CONTRIBUTING.md
+      - HACKING.md
+      - INSTALL.md
+      - LICENSE.txt
+      - NEWS.md
+      - NOTES*
+      - README.md
+      - SUPPORT.md
+      - "!.github/workflows/make.yml"
+  workflow_call:
+concurrency:
+  # When run via `workflow_call` the `github.workflow` and `github.ref` are the
+  # same as the parent so we need a differentiation suffix.
+  group: ${{ github.workflow }}-${{ github.ref }}-make
+  cancel-in-progress: true
+jobs:
+  make:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-20.04, target: x86_64-unknown-linux-gnu }
+          - { os: macos-13, target: x86_64-apple-darwin }
+          - { os: macos-latest, target: aarch64-apple-darwin }
+    defaults:
+      run:
+        shell: bash
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: ./Configure --no-tests
+      - run: make
+      - run: make DESTDIR="$PWD/stage" install
+      - uses: actions/upload-artifact@v4
+        with:
+          name: openssl-${{ matrix.target }}
+          path: stage
+  nmake-x86_64-pc-windows-msvc:
+    defaults:
+      run:
+        shell: bash
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: perl ./Configure --no-tests
+      - run: nmake
+      - run: nmake DESTDIR="$PWD/stage" install
+      - uses: actions/upload-artifact@v4
+        with:
+          name: openssl-x86_64-pc-windows-msvc
+          path: stage
