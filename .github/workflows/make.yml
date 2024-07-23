@@ -73,6 +73,7 @@ jobs:
         with:
           submodules: recursive
       - uses: ilammy/setup-nasm@v1
+      - uses: ilammy/msvc-dev-cmd@v1
       - run: perl ./Configure
       - run: nmake
       - run: nmake DESTDIR="$pwd/stage" install
