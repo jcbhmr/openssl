@@ -77,7 +77,9 @@ jobs:
       - run: perl ./Configure
       - run: nmake
       - run: nmake DESTDIR="$pwd/stage" install
+      - shell: bash
+        run: mv 'stage/Program Files/Common Files/SSL' 'stage/Program Files/OpenSSL/config'
       - uses: actions/upload-artifact@v4
         with:
           name: openssl-x86_64-pc-windows-msvc
-          path: stage
+          path: stage/Program Files/OpenSSL
