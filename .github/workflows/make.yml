@@ -60,7 +60,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-      - run: ./Configure --no-tests
+        with:
+          submodules: recursive
+      - run: ./Configure
       - run: make
       - run: make DESTDIR="$PWD/stage" install
       - uses: actions/upload-artifact@v4
@@ -74,7 +76,10 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      - run: perl ./Configure --no-tests
+        with:
+          submodules: recursive
+      - uses: shogo82148/actions-setup-perl@v1
+      - run: perl ./Configure
       - run: nmake
       - run: nmake DESTDIR="$PWD/stage" install
       - uses: actions/upload-artifact@v4
