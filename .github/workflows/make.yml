@@ -65,7 +65,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: openssl-${{ matrix.target }}
-          path: stage
+          path: stage/usr/local
   nmake-x86_64-pc-windows-msvc:
     defaults:
       run:
