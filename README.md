@@ -1,3 +1,32 @@
+# OpenSSL prebuilt
+
+📦 `libssl.a`, `openssl`, `libcrypto-*.dll` and more prebuilt binaries
+
+## Installation
+
+https://www.openssl.org/source/
+
+## Usage
+
+Release links
+
+```
+TODO
+```
+
+Nightly links
+
+```
+https://nightly.link/jcbhmr/openssl/workflows/make/master/openssl-aarch64-apple-darwin.zip
+https://nightly.link/jcbhmr/openssl/workflows/make/master/openssl-x86_64-apple-darwin.zip
+https://nightly.link/jcbhmr/openssl/workflows/make/master/openssl-x86_64-unknown-linux-gnu.zip
+https://nightly.link/jcbhmr/openssl/workflows/make/master/openssl-x86_64-pc-windows-msvc.zip
+```
+
+## Development
+
+---
+
 Welcome to the OpenSSL Project
 ==============================
 
