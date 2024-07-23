@@ -62,10 +62,13 @@ jobs:
       - run: ./Configure
       - run: make
       - run: make DESTDIR="$PWD/stage" install
+      - run: |
+          mv stage/usr/local stage2
+          echo './* => /usr/local/*' >> stage2/README.txt
       - uses: actions/upload-artifact@v4
         with:
           name: openssl-${{ matrix.target }}
-          path: stage/usr/local
+          path: stage2
   nmake-x86_64-pc-windows-msvc:
     runs-on: windows-latest
     steps:
@@ -78,8 +81,12 @@ jobs:
       - run: nmake
       - run: nmake DESTDIR="$pwd/stage" install
       - shell: bash
-        run: mv 'stage/Program Files/Common Files/SSL' 'stage/Program Files/OpenSSL/config'
+        run: |
+          mv 'stage/Program Files/OpenSSL' stage2
+          echo './* => "C:\Program Files\OpenSSL\*"' >> stage2/README.txt
+          mv 'stage/Program Files/Common Files/SSL' stage2/config
+          echo './config => "C:\Program Files\Common Files\SSL"' >> stage2/README.txt
       - uses: actions/upload-artifact@v4
         with:
           name: openssl-x86_64-pc-windows-msvc
-          path: stage/Program Files/OpenSSL
+          path: stage2
